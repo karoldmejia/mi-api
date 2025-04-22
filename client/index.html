@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios</title>
+</head>
+<body>
+    <h1>Aplicación de Gestión de Usuarios</h1>
+
+    <form id="user-form">
+        <input type="hidden" id="user-id">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+        <button type="submit">Guardar Usuario</button>
+    </form>
+
+    <button onclick="listUsers()">Listar Usuarios</button>
+
+    <div id="users-list"></div>
+
+    <script src="index.js"></script>
+</body>
+</html>

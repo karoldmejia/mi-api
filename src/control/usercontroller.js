@@ -33,7 +33,7 @@ const UserController = {
             newUser.id = db.users.length ? db.users[db.users.length - 1].id + 1 : 1;
 
             db.users.push(newUser)
-            dbConnection.writDB(db)
+            dbConnection.writeDB(db)
 
             res.status(201).send("create user user")
         }
@@ -54,7 +54,7 @@ const UserController = {
             }
             else{
                 db.users[userIndex] = { id, ...userData };
-                dbConnection.writDB(db)
+                dbConnection.writeDB(db)
                 res.status(204).send()
             }
         }
@@ -74,7 +74,7 @@ const UserController = {
             }
             else{
                 db.users.splice(userIndex, 1); 
-                dbConnection.writDB(db)
+                dbConnection.writeDB(db)
                 res.status(204).send()
             }
         }
