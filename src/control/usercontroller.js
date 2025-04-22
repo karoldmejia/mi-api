@@ -11,20 +11,30 @@ const UserController = {
     const db = dbConnection.readDB();
     const id = parseInt(req.params.id);
     const userGet = db.users.find(user => user.id === id);
+
+    if (!userGet) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
     res.status(200).json(userGet);
   },
 
   create: (req, res) => {
-    const db = dbConnection.readDB();
-    const userData = req.body;
-    const newUser = new User(userData.name, userData.email);
+    try {
+      const db = dbConnection.readDB();
+      const userData = req.body;
 
-    newUser.id = db.users.length ? db.users[db.users.length - 1].id + 1 : 1;
+      const newUser = new User(userData.name, userData.email);
 
-    db.users.push(newUser);
-    dbConnection.writeDB(db);
+      newUser.id = db.users.length ? db.users[db.users.length - 1].id + 1 : 1;
 
-    res.status(201).send("Usuario creado");
+      db.users.push(newUser);
+      dbConnection.writeDB(db);
+
+      res.status(201).send("User created");
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
   },
 
   update: (req, res) => {
@@ -33,10 +43,14 @@ const UserController = {
     const userData = req.body;
 
     const userIndex = db.users.findIndex(user => user.id === id);
-    db.users[userIndex] = { id, ...userData };
 
+    if (userIndex === -1) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    db.users[userIndex] = { id, ...userData };
     dbConnection.writeDB(db);
-    res.status(204).send("Usuario modificado");
+    res.status(200).send("User updated");
   },
 
   delete: (req, res) => {
@@ -44,10 +58,13 @@ const UserController = {
     const id = parseInt(req.params.id);
     const userIndex = db.users.findIndex(user => user.id === id);
 
+    if (userIndex === -1) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
     db.users.splice(userIndex, 1);
     dbConnection.writeDB(db);
-
-    res.status(204).send("Usuario eliminado");
+    res.status(200).send("User deleted");
   }
 };
 
